@@ -59,12 +59,17 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "apps.users",
     "drf_spectacular",
-    "apps.menu",
+    "apps.restaurant",
+    "rest_framework",
+    "rest_framework_simplejwt",
 ]
 
 REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "core.exceptions.custom_exception_handler",
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
 }
 
 SPECTACULAR_SETTINGS = {

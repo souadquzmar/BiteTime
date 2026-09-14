@@ -1,7 +1,8 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from apps.menu.api.v1.serializers import MenuItemSerializer
-from apps.menu.models import MenuItem
+
+from apps.restaurant.api.v1.serializers import MenuItemSerializer
+from apps.restaurant.models import MenuItem
 
 
 class MenuItemView(generics.ListAPIView):
