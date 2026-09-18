@@ -1,8 +1,9 @@
 from django.urls import path
 
-from apps.restaurant.api.v1.views import MenuItemView, OrderView
+from apps.restaurant.api.v1.views import MenuItemView, OrderView, QueueOrderView
 
 urlpatterns = [
     path("menu/", MenuItemView.as_view(), name="menu"),
-    path("order/", OrderView.as_view(), name="order"),
+    path("orders/", OrderView.as_view(), name="orders"),
+    path("orders/<int:pk>/queue/", QueueOrderView.as_view(), name="order-queue"),
 ]
