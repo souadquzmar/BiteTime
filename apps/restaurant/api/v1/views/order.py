@@ -43,3 +43,19 @@ class StartOrderPrepView(generics.UpdateAPIView):
             message="Order started preparation successfully",
             data=OrderSerializer(order).data,
         )
+
+
+class MarkOrderReadyView(generics.UpdateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [IsChef]
+    http_method_names = ["patch"]
+
+    def patch(self, request, *args, **kwargs):
+        order = generics.get_object_or_404(Order, pk=kwargs["pk"])
+
+        order = OrderLifecycle.mark_ready(order=order)
+
+        return success_response(
+            message="Order marked ready successfully", data=OrderSerializer(order).data
+        )

@@ -5,6 +5,7 @@ from apps.restaurant.api.v1.views import (
     OrderView,
     QueueOrderView,
     StartOrderPrepView,
+    MarkOrderReadyView,
 )
 
 urlpatterns = [
@@ -15,5 +16,10 @@ urlpatterns = [
         "orders/<int:pk>/start-prep/",
         StartOrderPrepView.as_view(),
         name="start-order-prep",
+    ),
+    path(
+        "orders/<int:pk>/mark-ready/",
+        MarkOrderReadyView.as_view(),
+        name="mark-order-ready",
     ),
 ]

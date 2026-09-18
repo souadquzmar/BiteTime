@@ -24,3 +24,14 @@ class OrderLifecycle:
         order.save(updated_fields=["status", "prep_started_at"])
 
         return order
+
+    @staticmethod
+    def mark_ready(order):
+        if order.status != Order.status.IN_PREP:
+            raise ValidationError("only orders in preparation can be marked ready")
+
+        order.status = Order.status.READY
+        order.completed_at = timezone.now()
+        order.save(updated_fields=["status", "completed_at"])
+
+        return order
