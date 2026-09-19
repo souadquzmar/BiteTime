@@ -1,6 +1,9 @@
+from datetime import timedelta
+
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 
+from apps.restaurant.components import PrepEstimator
 from apps.restaurant.models import Order
 
 
@@ -19,9 +22,12 @@ class OrderLifecycle:
         if order.status != Order.status.QUEUED:
             raise ValidationError("only queued orders can start prep")
 
+        now = timezone.now()
+        prep_time = PrepEstimator.calculate(order)
         order.status = Order.status.IN_PREP
-        order.prep_started_at = timezone.now()
-        order.save(updated_fields=["status", "prep_started_at"])
+        order.prep_started_at = now
+        order.estimated_ready_at = now + timedelta(minutes=prep_time)
+        order.save(updated_fields=["status", "prep_started_at", "estimated_ready_at"])
 
         return order
 
