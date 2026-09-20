@@ -4,7 +4,7 @@ from apps.restaurant.models import MenuItem
 
 
 class MenuItemSerializer(serializers.ModelSerializer):
-    model = MenuItem
 
     class Meta:
+        model = MenuItem
         fields = "__all__"

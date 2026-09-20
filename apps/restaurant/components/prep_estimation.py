@@ -1,4 +1,5 @@
 from apps.restaurant.models import Order
+from apps.restaurant.models.order import Status
 
 
 class PrepEstimator:
@@ -11,7 +12,7 @@ class PrepEstimator:
         queue_backlog = 0
 
         queued_orders = (
-            Order.objects.filter(status=Order.status.QUEUED)
+            Order.objects.filter(status=Status.QUEUED)
             .exclude(pk=order.pk)
             .prefetch_related("order_items__menu_item")
         )

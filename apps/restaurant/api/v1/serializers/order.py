@@ -21,7 +21,7 @@ class OrderSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
-        create_order(
+        return create_order(
             customer=self.context["request"].user,
             table_number=validated_data["table_number"],
             items=validated_data["order_items"],
