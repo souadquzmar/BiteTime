@@ -15,10 +15,12 @@ class RegisterSerializer(serializers.ModelSerializer):
         validators=[validate_password],
     )
     password2 = serializers.CharField(write_only=True)
+    bio = serializers.CharField(allow_blank=True, required=False)
+    avatar = serializers.ImageField(allow_blank=True, required=False)
 
     class Meta:
         model = User
-        fields = ["id", "username", "email", "password", "password2"]
+        fields = ["id", "username", "email", "password", "password2", "bio", "avatar"]
 
     def validate(self, attrs):
         if attrs["password"] != attrs["password2"]:
