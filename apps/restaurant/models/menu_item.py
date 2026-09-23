@@ -9,6 +9,7 @@ class MenuItem(models.Model):
     )
     estimated_prep_minutes = models.PositiveIntegerField()
     is_available = models.BooleanField(default=True)
+    image = models.ImageField(upload_to="menu_items/", blank=True, null=True)
 
     def __str__(self):
         return self.name

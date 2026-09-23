@@ -16,7 +16,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     )
     password2 = serializers.CharField(write_only=True)
     bio = serializers.CharField(allow_blank=True, required=False)
-    avatar = serializers.ImageField(allow_blank=True, required=False)
+    avatar = serializers.ImageField(allow_null=True, required=False)
 
     class Meta:
         model = User
