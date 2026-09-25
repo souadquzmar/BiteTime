@@ -16,9 +16,7 @@ class MediaUploadComponent:
         object_key = generate_object_key(file_name)
 
         expiration = 900
-        expires_at = timezone.now() + timedelta(
-            seconds=expiration
-        )
+        expires_at = timezone.now() + timedelta(seconds=expiration)
 
         upload = TemporaryUpload.objects.create(
             user=user,
@@ -38,17 +36,13 @@ class MediaUploadComponent:
     @staticmethod
     def complete_upload(*, upload):
         if upload.status != Status.PENDING:
-            raise ValidationError(
-                "Upload is no longer pending."
-            )
+            raise ValidationError("Upload is no longer pending.")
 
         if upload.expires_at <= timezone.now():
             upload.status = Status.EXPIRED
             upload.save(update_fields=["status"])
 
-            raise ValidationError(
-                "Upload has expired."
-            )
+            raise ValidationError("Upload has expired.")
 
         upload.status = Status.COMPLETED
         upload.save(update_fields=["status"])
