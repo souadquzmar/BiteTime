@@ -1,6 +1,11 @@
+import logging
+
 import boto3
+from botocore.exceptions import ClientError
 
 from django.conf import settings
+
+logger = logging.getLogger(__name__)
 
 
 class StorageService:
@@ -19,12 +24,18 @@ class StorageService:
             region_name=settings.AWS_S3_REGION_NAME,
         )
 
-        return client.generate_presigned_url(
-            "put_object",
-            Params={
-                "Bucket": settings.AWS_STORAGE_BUCKET_NAME,
-                "Key": object_key,
-                "ContentType": content_type,
-            },
-            ExpiresIn=expiration,
-        )
+        try:
+            response = client.generate_presigned_url(
+                "put_object",
+                Params={
+                    "Bucket": settings.AWS_STORAGE_BUCKET_NAME,
+                    "Key": object_key,
+                    "ContentType": content_type,
+                },
+                ExpiresIn=expiration,
+            )
+        except ClientError:
+            logger.exception("Failed to generate pre-signed upload URL.")
+            raise
+
+        return response
