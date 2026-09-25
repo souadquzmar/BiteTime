@@ -7,7 +7,7 @@ from apps.restaurant.api.v1.views import (
     StartOrderPrepView,
     MarkOrderReadyView,
 )
-from apps.restaurant.api.v1.views.media import PresignedUploadView
+from apps.restaurant.api.v1.views.media import PresignedUploadView, CompleteUploadView
 
 urlpatterns = [
     path("menu/", MenuItemView.as_view(), name="menu"),
@@ -27,5 +27,10 @@ urlpatterns = [
         "media/presigned-url/",
         PresignedUploadView.as_view(),
         name="presigned-upload",
+    ),
+    path(
+        "media/<int:upload_id>/complete/",
+        CompleteUploadView.as_view(),
+        name="complete-upload",
     ),
 ]
