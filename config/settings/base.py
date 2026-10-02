@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 import environ
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -41,6 +42,7 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
+
 
 # Application definition
 
@@ -202,3 +204,21 @@ AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
 AWS_S3_ENDPOINT_URL = env("AWS_S3_ENDPOINT_URL")
 AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME")
+
+CELERY_BROKER_URL = env("CELERY_BROKER_URL")
+
+CELERY_TIMEZONE = TIME_ZONE
+
+CELERY_BEAT_SCHEDULE = {
+    "process-ready-orders": {
+        "task": "apps.restaurant.tasks.orders.process_ready_orders",
+        "schedule": timedelta(seconds=30),
+    },
+    "daily-system-cleanup": {
+        "task": "apps.restaurant.tasks.cleanup.daily_system_cleanup",
+        "schedule": crontab(
+            hour=0,
+            minute=0,
+        ),
+    },
+}
